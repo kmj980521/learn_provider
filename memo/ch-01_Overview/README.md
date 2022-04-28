@@ -70,7 +70,7 @@
 ### 1) read
 -  ` context.read<T>() -> T ` 
 - Obtain a value from the nearese ancestor provider of type T : 가장 가까운 T 타입의 프로바이더를 찾는다.
-- `Provider.of<T>(context,listen: false)
+- `Provider.of<T>(context,listen: false)`
 - 값을 읽어오기만 하고, Nofitifier를 호출하는 코드가 있어야 다시 rebuild를 진행한다.
 - 변화를 listen하지 않는다. 
 
@@ -78,7 +78,7 @@
 - `context.watch<T>() -> T `
 - Obtain a value from the nearest ancestor provider of type T, and subscribe to the provider : 가장 가까운 T 타입의 프로바이더를 return 하고, value change를 listen한다.
 - `Provider.of<T>(context)` 
-- **오브젝트 중 하나의 내용이라도 변하면 전체가 rebuild **
+- **오브젝트 중 하나의 내용이라도 변하면 전체가 rebuild**
 
 ### 3) select 
 - `context.select<T,R>(R selecttor(T value)) -> R`
