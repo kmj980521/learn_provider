@@ -546,8 +546,49 @@ Consumer<Dog4>(
  
  ## 20. ChangeNotifier addListener
  
+ ```dart
  
+ @override
+  void initState() {
+    super.initState();
+    appProv = context.read<AppProvider>();
+    appProv.addListener(appListener);
+  }
+
+  void appListener() {
+    if (appProv.state == AppState.success) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return SuccessPage();
+      }));
+    } else if (appProv.state == AppState.error) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('Somethig went wrong'),
+          );
+        },
+      );
+    }
+  }
  
+ void submit() {
+    setState(() {
+      autovalidateMode = AutovalidateMode.always; // 한번 제출되고 나면 validatemode on
+    });
+    final form = formKey.currentState;
+
+    if (form == null || !form.validate()) return;
+
+    form.save();
+    context.read<AppProvider>().getResult(searchTerm!);
+ }
+ 
+ ```
+ - 버튼으로 submit을 호출하면 getResult()가 불리고, 이 값을 토대로 Provider에서 처리를 한다. 그 후 return 값에 대해서 Listener를 통해 처리를 해준다.
+ 
+ ![image](https://user-images.githubusercontent.com/61898890/165771245-7e0ab63c-fced-4f16-a027-fe83762955e5.png)
+
  
  
  
