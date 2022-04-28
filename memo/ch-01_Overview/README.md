@@ -435,30 +435,113 @@ Consumer<Dog4>(
  
  
  
+ ## 18. ProxyProvider 예제
+ 
+ ### update / create를 사용했을 때
+ 
+ ```dart
+ 
+ class Translations {
+  late int _value;
+
+  void update(int newValue) {
+    _value = newValue;
+  }
+
+  String get title => 'You clicked $_value times';
+}
+ 
+ 
+ ProxyProvider0<Translations>(
+          create: (_) => Translations(),
+          update: (_, Translations? translations) {
+            translations!.update(counter);
+            return translations;
+          },
+ 
+ ```
+ 
+ ### update만을 사용했을 때 
+ 
+ ```dart
+ 
+ class Translations {
+  const Translations(this._value);
+  final int _value;
+
+  String get title => 'You clicked $_value times';
+}
+ 
+ 
+ ProxyProvider0<Translations>(
+          update: (_, __) => Translations(counter),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ShowTranslations(),
+              SizedBox(height: 20.0),
+              IncreaseButton(increment: increment),
+            ],
+          ),
+        ),
+ 
+ 
+ ```
+ 
+## 19. Provider의 에러
+ 
+### 1. ProviderNotFound Exceptiuon
+ - 새로운 프로바이더를 생성하고 hot reload를 하거나, buildcontext 위치가 옳지 않거나, 다른 route에서 provider를 읽을 때.
+ 
+### 2. Tried to listen to a value exposed with provider
+ - provider.watch<T>() 를 사용할 때 자주 발생하는 에러 
+ - provider.of()를 호출할 때 listen : false를 하거나, read()를 사용한다. 
  
  
  
+## 19-1 Page rendering process of StatefulWidget 
+ 1. Create an element (BuildContext)
+ 2. initState
+ 3. didChangeDependencies
+ 4. Build
+ 
+ ![image](https://user-images.githubusercontent.com/61898890/165745349-a0860f15-f164-40b1-ac06-27f2e75ab60c.png)
+
+ - initState 전에 build를 하라는 에러가 많이 발생해 state management를 사용한다면 showDialog, showSnackBar로 따리 처리해준다.
+ 
+ ### ** addPostFrameCallback **
  
  
+ ```dart
+ 
+ WidgetsBinding.instance!.addPostFrameCallback((Duration timestamp) { 
+ // Do something
+ });
+ 
+ ```
+ - 현재 Frame이 완성된 후, 등록된 callback을 실행시킨다. 
  
  
+ ```dart
  
+ @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      context.read<Counter>().increment();
+      myCounter = context.read<Counter>().counter + 10;
+    });
+    // Future.delayed(Duration(seconds: 0), () {
+    //   context.read<Counter>().increment();
+    //   myCounter = context.read<Counter>().counter + 10;
+    // });
+    // Future.microtask(() {
+    //   context.read<Counter>().increment();
+    //   myCounter = context.read<Counter>().counter + 10;
+    // });
+  }
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+ ```
  
  
  
