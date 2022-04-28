@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_provider/ch01_overview/15_changetotifier_with_addListener/app_provider.dart';
 import 'package:learn_provider/ch01_overview/15_changetotifier_with_addListener/success_page.dart';
-
 import 'package:provider/provider.dart';
-import 'ch01_overview/14_exception_handler/providers/counter.dart';
-import 'ch01_overview/14_exception_handler/pages/counter_page.dart';
-import 'ch01_overview/14_exception_handler/pages/handle_dialog_page.dart';
-import 'ch01_overview/14_exception_handler/pages/navigate_page.dart';
-
-void main() {
-  runApp(MyApp());
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
