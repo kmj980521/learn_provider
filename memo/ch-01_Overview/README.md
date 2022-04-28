@@ -21,10 +21,13 @@
 
 - create에 전달하는 함수가 return 하는 오브젝트르 하위 위젯들이 접근 가능하다.
 
+---
+
 ## 2. Provider 없이 state를 관리
 - 굉장히 불필요하게 값을 전달해줘야 한다.
 - 위젯트리가 깊어질수록 불필요하고 어느 위젯에서 값을 바꾸었는지 알 수가 없다.
 
+---
 
 ## 3. Dependency Injection
 - 오브젝트를 위젯트리 상에서 쉽게 엑세스 하게 해주는 것 
@@ -37,6 +40,7 @@
 
 - `Provider.of<Dog>(context, listen: false).grow();` : 버튼은 어떤 값이 변한다고 해도 다시 그려질 필요가 없으니 listen : false를 줘서 rebuild를 막는다
 
+---
 
 ## 4. ChangeNotifier
 - A class that can be extended or mixed in that provides a change notification API using VoidCallback for notofication
@@ -54,9 +58,13 @@
 ![image](https://user-images.githubusercontent.com/61898890/165440168-8408b328-1a18-4254-bfec-78d59da21d20.png)
 
 
+---
+
 ## 5. ChangeNotifierProvider
 - 1. Create an instance of ChangeNotifier
 - 2. Provide an easy way to access ChangeNotifier for widgets that need it, and rebuilds the UI if necessary
+
+---
 
 ## 6. extension methodes
 ### 1) read
@@ -78,10 +86,14 @@
 - listen 하고 싶은 것만 선별적으로 listen
 - `context.select<Dog, String> ((Dog dog) => dog.name) : name이 변할 때만 rebuilding
 
+---
+
+
 ## 7. MultiProvider
 
 ![image](https://user-images.githubusercontent.com/61898890/165442246-b3f5ca1a-68d7-4b2c-9fb6-02b98a4b87ed.png)
 
+---
 
 ## 8. FutureProvider 
 - 연속된 값으로 계속 리빌드 할 때는 Stream이 나을 수도 있다
@@ -96,9 +108,12 @@ FutureProvider(
 ),
 
 ```
-
 - FutureProvider는 Future의 return value를 타입으로 가진다. 작성한 코드에서는 Future<int> 타입 
-
+ 
+ 
+ 
+ 
+---
 
 ## 9. StreamProvider
  
@@ -115,6 +130,9 @@ FutureProvider(
 - creat는 한 번만 호출되기 때문에 논리적으로도 맞지 않다
 
 
+--- 
+ 
+ 
 ## 10. Consumer
 - Obtains Provider<T> from its ancestors and passes its value to builder 
 - The Consumer widget doesn't do any fancy work. it just class Provider.of in a new widget and delegats its build implementation to builder : 새로운 위젯에서 Provider.of를 호출하고 위젯의 build 구현을 builder에 위임한다 
@@ -165,15 +183,70 @@ Consumer<Dog4>(
 
 - child를 직접 지정해줌으로써 rebuild를 방지한다. Column 내에 Provider.of와는 무관한 위젯들이 있을 때 rebuild를 방지하기 위해 사용한다. 
 
+---
+ 
+ 
+## 11. ProviderNotFoundException
+ 
+ ```
+ 
+ Error : Could not find the correct Provider<T> above this MyHomePage Widget
+ 
+ This happends because you used a 'BuildContext' that does not inclue the provider of your choice. There are a few common scenarios:
+ 
+ - You added a new provider in your `main.dart` and performed a hot-reload.
+  To fix, perform a hot-restart.  : 핫 리로드시 프로바이더를 추가할 경우 
+  
+- The provider you are trying to read is in a different route. : 다른 route에서 프로바이더의 값을 read할 경우 
+
+  Providers are "scoped". So if you insert of provider inside a route, then
+  other routes will not be able to access that provider.
+
+- You used a `BuildContext` that is an ancestor of the provider you are trying to read. : 프로바이더를 사용해 상위 ancestor를 read하기 위해 BuildContext 과정을 진행한다.
+
+  Make sure that MyHomepage is under your MultiProvider/Provider<Foo>.
+  This usually happens when you are creating a provider and trying to read it immediately.
+ 
+ ----
+ 
+ For example, instead of:
+
+
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // Will throw a ProviderNotFoundError, because `context` is associated
+      // to the widget that is the parent of `Provider<Example>`
+      child: Text(context.watch<Example>()),
+    ),
+  }
+
+
+  consider using `builder` like so:
+
+
+  Widget build(BuildContext context) {
+    return Provider<Example>(
+      create: (_) => Example(),
+      // we use `builder` to obtain a new `BuildContext` that has access to the provider
+      builder: (context) {
+        // No longer throws
+        return Text(context.watch<Example>()),
+      }
+    ),
+  }
+
+ 
+ 
+ 
+``` 
+
+- 근본적으로 Builder와 Consumer는 비슷해서 서로 공용해 사용할 수 있다.
 
 
 
 
-
-
-
-
-
+---
 
 
 
