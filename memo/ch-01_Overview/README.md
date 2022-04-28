@@ -510,7 +510,7 @@ Consumer<Dog4>(
 
  - initState 전에 build를 하라는 에러가 많이 발생해 state management를 사용한다면 showDialog, showSnackBar로 따리 처리해준다.
  
- ### ** addPostFrameCallback **
+ ### addPostFrameCallback
  
  
  ```dart
