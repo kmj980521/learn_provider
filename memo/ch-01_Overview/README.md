@@ -79,6 +79,7 @@
 - Obtain a value from the nearest ancestor provider of type T, and subscribe to the provider : 가장 가까운 T 타입의 프로바이더를 return 하고, value change를 listen한다.
 - `Provider.of<T>(context)` 
 - **오브젝트 중 하나의 내용이라도 변하면 전체가 rebuild**
+- rebuild 하고자 하는 widget에서는 watch를 사용한다.
 
 ### 3) select 
 - `context.select<T,R>(R selecttor(T value)) -> R`
@@ -543,7 +544,7 @@ Consumer<Dog4>(
  
  ```
  
- 
+ ## 20. ChangeNotifier addListener
  
  
  
