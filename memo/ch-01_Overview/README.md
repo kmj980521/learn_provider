@@ -126,16 +126,44 @@ FutureProvider(
  Consumer(
   Key? key,
   required Widget builder(BuildContext context, T value, Widget? child),
- 
  }
  
 ``` 
  
 
 
+```dart
 
+Consumer<Dog4>(
+        builder: (BuildContext context, Dog4 dog, Widget? child) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                child!,
+                SizedBox(height: 10.0,),
+                Text(
+                  '- name: ${dog.name}',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                BreedAndAge(),
+              ],
+            ),
+          );
+        },
+        child: Text(
+          'I like dogs very much',
+          style: TextStyle(fontSize: 20.0),
+        ),
+      ),
+ 
+```
 
-
+- child를 직접 지정해줌으로써 rebuild를 방지한다. Column 내에 Provider.of와는 무관한 위젯들이 있을 때 rebuild를 방지하기 위해 사용한다. 
 
 
 
