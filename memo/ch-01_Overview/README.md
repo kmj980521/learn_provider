@@ -63,6 +63,8 @@
 -  ` context.read<T>() -> T ` 
 - Obtain a value from the nearese ancestor provider of type T : 가장 가까운 T 타입의 프로바이더를 찾는다.
 - `Provider.of<T>(context,listen: false)
+- 값을 읽어오기만 하고, Nofitifier를 호출하는 코드가 있어야 다시 rebuild를 진행한다.
+- 변화를 listen하지 않는다. 
 
 ### 2) watch
 - `context.watch<T>() -> T `
@@ -81,21 +83,54 @@
 ![image](https://user-images.githubusercontent.com/61898890/165442246-b3f5ca1a-68d7-4b2c-9fb6-02b98a4b87ed.png)
 
 
+## 8. FutureProvider 
+- 연속된 값으로 계속 리빌드 할 때는 Stream이 나을 수도 있다
+- Future에 대해 try~catch를 작성
+
+```dart
+
+FutureProvider(
+ Key? key,
+ required Create<Future<T>?> create,
+ required T initialData
+),
+
+```
+
+- FutureProvider는 Future의 return value를 타입으로 가진다. 작성한 코드에서는 Future<int> 타입 
 
 
+## 9. StreamProvider
+ 
+ 
+ ```dart
+ StreamProvider(
+ Key? key,
+ required Create<Future<T>?> create,
+ required T initialData
+),
+```
+
+- 만약 Provider에서 create에서 다른 데이터를 watch로 읽어와 사용한다면? `Tried to listen to an InheritedWidget in a life-cycle that will never be called again.` 에러 발생
+- creat는 한 번만 호출되기 때문에 논리적으로도 맞지 않다
 
 
-
-
-
-
-
-
-
-
-
-
-
+## 10. Consumer
+- Obtains Provider<T> from its ancestors and passes its value to builder 
+- The Consumer widget doesn't do any fancy work. it just class Provider.of in a new widget and delegats its build implementation to builder : 새로운 위젯에서 Provider.of를 호출하고 위젯의 build 구현을 builder에 위임한다 
+- builder must not be null and may be called multiple times(such as when the provided value changes) 
+- 모든 위젯을 새로 그린다? -> builder에 Nullable한 파라미터가 있어 특정 위젯을 build에서 제외시킬 수 있다. 
+ 
+```dart
+ 
+ Consumer(
+  Key? key,
+  required Widget builder(BuildContext context, T value, Widget? child),
+ 
+ }
+ 
+``` 
+ 
 
 
 
