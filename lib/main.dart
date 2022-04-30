@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:learn_provider/ch02_todo/mains.dart';
+import 'package:learn_provider/ch03_weatherApp/mains.dart';
 import 'package:provider/provider.dart';
 
 import 'ch02-2_stateNotifier/mains.dart';
 import 'ch02-3_todo_stateNotifier/mains.dart';
 
+import 'ch03-01_weather_changeNotifier_with_Proxy/mains.dart';
+import 'ch03-2_weather_stateNotifierProvider/mains.dart';
+import 'ch03_weatherApp/pages/home_page.dart';
+
 
 
 
 void main() {
-  runApp(MyTodoAppRefactor_StateNotifier());
+  runApp(MyWeatherAppStateNotifier());
 }
 /*
 class MyApp extends StatelessWidget {
