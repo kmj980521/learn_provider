@@ -32,3 +32,40 @@ return FadeInImage.assetNetwork(
     );
 
 ```
+
+## 3. StateNotifierProvider 
+- main에서 PRovider를 선언할 때는 `StateNotifierProvider<프로바이더 클래스, 관리하는 타입> ( create: )` 로 호출한다.
+- 자체적으로 **state**라는 것을 가진다.
+
+```dart
+
+// Main
+StateNotifierProvider<WeatherProvider, WeatherState>(
+          create: (context) => WeatherProvider(),
+        ),
+
+// Provier 정의
+class WeatherProvider extends StateNotifier<WeatherState> with LocatorMixin {
+
+  WeatherProvider() : super(WeatherState.initial());
+
+  Future<void> fetchWeather(String city) async{
+    state = state.copyWith(status: WeatherStatus.loading);
+    try{
+      final Weather weather = await weatherRepository.fetchWeather(city);
+      state = state.copyWith(status: WeatherStatus.loaded,weather: weather);
+    } on CustomError catch (e){
+      state = state.copyWith(status: WeatherStatus.error, error: e);
+    }
+  }
+}
+
+```
+
+## 4. Watch / Read
+- Watch는 값이 변할 때마다 새로운 UI를 그려줄 때 사용한다.
+- Read는 임시로 값을 읽어와 작업을 처리하고난 후에 사용할 때 불러준다.
+
+
+## 5. 값 불러오기
+- `context.watch<ThemeState>().appTheme` : 특정 State를 바로 접근가능하다.
