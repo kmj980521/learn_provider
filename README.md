@@ -2,4 +2,4 @@
 
 A new Flutter project.
 
-[riverpod] (https://riverpod.dev/) 
+[riverpod](https://riverpod.dev/)
